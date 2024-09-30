@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "UC Berkeley RMP Ratings",
+    "version": "1.0",
+    "description": "Displays RateMyProfessor ratings for UC Berkeley professors on the class search page",
+    "permissions": [
+      "activeTab"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://classes.berkeley.edu/*"],
+        "js": ["content.js"]
+      }
+    ],
+    "host_permissions": [
+      "http://localhost:3000/*"
+    ]
+  }
