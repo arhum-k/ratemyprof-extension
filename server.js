@@ -30,8 +30,7 @@ function isSimilar(professorFullName, inputName) {
 
 app.get('/getRating', async (req, res) => {
   try {
-    //const professorName = req.query.name;
-    const professorName = 'Michael M Cohen';
+    const professorName = req.query.name;
 
     // Define the headers for the GraphQL request
     const headers = {
@@ -112,8 +111,7 @@ app.get('/getRating', async (req, res) => {
         // });
         const filteredListings = listings.filter(professor => {
             const fullName = `${professor.node.firstName} ${professor.node.lastName}`;
-            //const similarity = areNamesSimilar(fullName, professorName);
-            const similarity = areNamesSimilar("Michael Cohen", "Michael M Cohen");
+            const similarity = areNamesSimilar(fullName, professorName);
             console.log(similarity)
             return similarity
 
