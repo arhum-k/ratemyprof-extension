@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "UC Berkeley RMP Ratings",
+    "name": "UC Berkeley Catalog RateMyProfessor ",
     "version": "1.0",
-    "description": "Displays RateMyProfessor ratings for UC Berkeley professors on the class search page",
+    "description": "Displays RateMyProfessor ratings for UC Berkeley professors on the Academic Guide (https://classes.berkeley.edu/search/class/)",
     "permissions": [
       "activeTab"
     ],

@@ -2,9 +2,8 @@ async function fetchRatings(professorName) {
     const apiUrl = `http://localhost:3000/getRating?name=${encodeURIComponent(professorName)}`;
     try {
       const response = await fetch(apiUrl);
-      console.log('fr fetch')
       const data = await response.json();
-      console.log(data)
+      console.log("data",data)
       return data
     } catch (error) {
       console.error('Error fetching rating:', error);
@@ -27,18 +26,24 @@ async function fetchRatings(professorName) {
     professorElement.appendChild(ratingsSpan);
   }
   
+  
   async function processInstructors() {
-    const instructorElements = document.querySelectorAll('.ls-instructors .icon + span');
-    for (const element of instructorElements) {
-      const professorName = element.textContent.trim();
-      console.log(professorName,"professorName")
-      const ratings = await fetchRatings(professorName);
-      console.log('ratings',ratings)
-      addRatingsToDOM(element, ratings);
-      console.log('done adding dom')
+    const instructorContainers = document.querySelectorAll('.ls-instructors');
+    for (const container of instructorContainers) {
+      const instructorElements = container.querySelectorAll('span:not(.icon)');
+      for (const element of instructorElements) {
+        const professorName = element.textContent.trim();
+        if (professorName && professorName !== ',') {
+          console.log(professorName, "professorName");
+          const ratings = await fetchRatings(professorName);
+          addRatingsToDOM(element, ratings);
+          console.log('done adding dom');
+        }
+      }
     }
-    console.log("DONE PROCESSING INSTRUCTORS")
+    console.log("DONE PROCESSING INSTRUCTORS");
   }
+  
   
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', processInstructors);

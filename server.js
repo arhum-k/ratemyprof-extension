@@ -9,24 +9,6 @@ const areNamesSimilar = require('./stringSimilarity.js');
 const app = express();
 app.use(cors());
 
-const threshold = 80;  // Set a threshold for similarity (out of 100)
-
-// Function to compute the fuzzy similarity between two names
-function isSimilar(professorFullName, inputName) {
-  // Compare full names using fuzzball's ratio
-  const fullMatchScore = fuzz.ratio(professorFullName.toLowerCase(), inputName.toLowerCase());
-
-  // Split the names and use fuzzball's partial ratio for more flexible matching
-  const professorNameParts = professorFullName.toLowerCase().split(' ');
-  const inputNameParts = inputName.toLowerCase().split(' ');
-
-  const firstNameScore = fuzz.partial_ratio(professorNameParts[0], inputNameParts[0]);
-  const lastNameScore = fuzz.partial_ratio(professorNameParts[professorNameParts.length - 1], inputNameParts[inputNameParts.length - 1]);
-
-  // Return true if either full name score is high or both first and last name are reasonably close
-  return fullMatchScore >= threshold || (firstNameScore >= threshold && lastNameScore >= threshold);
-}
-
 
 app.get('/getRating', async (req, res) => {
   try {
@@ -112,12 +94,10 @@ app.get('/getRating', async (req, res) => {
         const filteredListings = listings.filter(professor => {
             const fullName = `${professor.node.firstName} ${professor.node.lastName}`;
             const similarity = areNamesSimilar(fullName, professorName);
-            console.log(similarity)
             return similarity
 
            //return isSimilar(fullName, professorName); // Use the fuzzy match function
           });
-        console.log('filtered listings',filteredListings)
         if (filteredListings.length > 0) {
             let professorMatches = [];
             
