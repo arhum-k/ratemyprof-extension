@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "UC Berkeley Catalog RateMyProfessor ",
+    "version": "1.0",
+    "description": "Displays RateMyProfessor ratings for UC Berkeley professors on the Academic Guide (https://classes.berkeley.edu/search/class/)",
+    "content_scripts": [
+      {
+        "matches": ["https://classes.berkeley.edu/*"],
+        "js": ["content.js"]
+      }
+    ],
+    "host_permissions": [
+      "http://localhost:3000/*"
+    ]
+  }

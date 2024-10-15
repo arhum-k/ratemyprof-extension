@@ -1,0 +1,16 @@
+{
+  "name": "berkeley-rmp-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "@mtucourses/rate-my-professors": "^2.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fuzzball": "^2.1.2",
+    "natural": "^8.0.1",
+    "string-similarity": "^4.0.4"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
