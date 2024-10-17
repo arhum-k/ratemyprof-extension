@@ -85,12 +85,6 @@ app.get('/getRating', async (req, res) => {
             console.log(`No results found for professor: ${professorName}`);
             return res.status(404).json({ message: 'No professor found.' });
           }
-        console.log('filtering results')
-        // const filteredListings = listings.filter(professor => {
-        //     const fullName = `${professor.node.firstName} ${professor.node.lastName}`;
-        //     const similarity = stringSimilarity.compareTwoStrings(fullName.toLowerCase(), professorName.toLowerCase());
-        //     return similarity >= threshold;
-        // });
         const filteredListings = listings.filter(professor => {
             const fullName = `${professor.node.firstName} ${professor.node.lastName}`;
             const similarity = areNamesSimilar(fullName, professorName);
@@ -111,7 +105,7 @@ app.get('/getRating', async (req, res) => {
                 school: professor.node.school.name
               });
             });
-            console.log('done searching ratings')
+            console.log('done searching ratings for ', professorName)
             res.json(professorMatches);
           } else {
             console.log(`No matching professor found for: ${professorName}`);
