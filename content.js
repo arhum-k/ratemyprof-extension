@@ -99,44 +99,41 @@ async function fetchProfRMPInfo(professorName) {
     let detailedInfo = '';
   
     if (processedRating.isWeightedAverage) {
-      detailedInfo += `<h3>Weighted Averages:</h3>`;
-      detailedInfo += `<p>Rating: ${processedRating.rating.toFixed(2)}</p>`;
-      detailedInfo += `<p>Difficulty: ${processedRating.avgDifficulty.toFixed(2)}</p>`;
-      detailedInfo += `<p>Would Take Again: ${processedRating.wouldTakeAgainPercent.toFixed(2)}%</p>`;
-      detailedInfo += `<p>Total Ratings: ${processedRating.numRatings}</p>`;
-      detailedInfo += `<h3>Original Listings:</h3>`;
+      detailedInfo += `<h3 class="popup-heading">Weighted Averages:</h3>`;
+        detailedInfo += `<p class="popup-detail"><strong>Rating:</strong> ${processedRating.rating.toFixed(2)}</p>`;
+        detailedInfo += `<p class="popup-detail"><strong>Difficulty:</strong> ${processedRating.avgDifficulty.toFixed(2)}</p>`;
+        detailedInfo += `<p class="popup-detail"><strong>Would Take Again:</strong> ${processedRating.wouldTakeAgainPercent.toFixed(2)}%</p>`;
+        detailedInfo += `<p class="popup-detail"><strong>Total Ratings:</strong> ${processedRating.numRatings}</p>`;
+        detailedInfo += `<h3 class="popup-heading">Original Listings:</h3>`;
     }
+
   
     originalRatings.forEach((rating, index) => {
-      detailedInfo += originalRatings.length > 1 ? `<h4>Listing ${index + 1}:</h4>` : '';
-      detailedInfo += `<p>Rating: ${rating.rating}</p>`;
-      detailedInfo += `<p>Difficulty: ${rating.avgDifficulty}</p>`;
-      detailedInfo += `<p>Would Take Again: ${rating.wouldTakeAgainPercent}%</p>`;
-      detailedInfo += `<p>Number of Ratings: ${rating.numRatings}</p>`;
-    });
+      const indexText = index > 0 ? ` (${index + 1})` : '';
+      detailedInfo += `<h4 class="popup-professor-name"><a href="https://www.ratemyprofessors.com/professor/${rating.urlId}" target="_blank">${rating.name}${indexText}</a></h4>`;
+      if (rating.numRatings === 0) {
+          detailedInfo += `<p class="popup-no-ratings">No ratings</p>`;
+      } else {
+          detailedInfo += `<p class="popup-detail"><strong>Rating:</strong> ${rating.rating}</p>`;
+          detailedInfo += `<p class="popup-detail"><strong>Difficulty:</strong> ${rating.avgDifficulty}</p>`;
+          detailedInfo += `<p class="popup-detail"><strong>Would Take Again:</strong> ${Math.round(rating.wouldTakeAgainPercent)}%</p>`;
+          detailedInfo += `<p class="popup-detail"><strong>Number of Ratings:</strong> ${rating.numRatings}</p>`;
+      }});
+
+    
   
     // Create popup
     const popup = document.createElement('div');
     popup.innerHTML = detailedInfo;
-    popup.style.position = 'fixed';
-    popup.style.left = '50%';
-    popup.style.top = '50%';
-    popup.style.transform = 'translate(-50%, -50%)';
-    popup.style.backgroundColor = 'white';
-    popup.style.border = '1px solid black';
-    popup.style.padding = '20px';
-    popup.style.zIndex = '1000';
-    popup.style.maxHeight = '80vh';
-    popup.style.overflowY = 'auto';
-    popup.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
-  
+    popup.classList.add('popup');
+
     // Add close button
     const closeButton = document.createElement('button');
     closeButton.textContent = 'Close';
-    closeButton.style.marginTop = '10px';
+    closeButton.classList.add('popup-close-button');
     closeButton.addEventListener('click', () => document.body.removeChild(popup));
     popup.appendChild(closeButton);
-  
+    
     document.body.appendChild(popup);
   
     // Close popup when clicking outside
@@ -146,4 +143,72 @@ async function fetchProfRMPInfo(professorName) {
         document.removeEventListener('click', closePopup);
       }
     });
+
+  const style = document.createElement('style');
+  style.textContent = `
+  .popup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    animation: fadeIn 0.3s ease-in-out;
   }
+  .popup-heading {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #0056b3; /* Softer blue */
+  }
+  .popup-detail {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  .popup-professor-name a {
+    font-size: 16px;
+    color: #0056b3; /* Softer blue */
+    text-decoration: underline; /* Always underlined */
+    font-weight: bold;
+  }
+  .popup-no-ratings {
+    font-size: 14px;
+    color: #999;
+  }
+  .popup-close-button {
+    margin-top: 15px;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+  }
+  .popup-close-button:hover {
+    background-color: #e0e0e0;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+// Append the style to the document head
+document.head.appendChild(style);
+}

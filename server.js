@@ -38,7 +38,9 @@ app.get('/getRating', async (req, res) => {
                     firstName
                     lastName
                     avgRating
+                    id
                     numRatings
+                    legacyId
                     wouldTakeAgainPercent
                     avgDifficulty
                     school {
@@ -98,6 +100,8 @@ app.get('/getRating', async (req, res) => {
             filteredListings.forEach(professor => {
                 professorMatches.push({
                 name: `${professor.node.firstName} ${professor.node.lastName}`,
+                id: `${professor.node.id}`,
+                urlId: `${professor.node.legacyId}`,
                 rating: professor.node.avgRating,
                 numRatings: professor.node.numRatings,
                 wouldTakeAgainPercent: professor.node.wouldTakeAgainPercent,
@@ -105,10 +109,10 @@ app.get('/getRating', async (req, res) => {
                 school: professor.node.school.name
               });
             });
-            console.log('done searching ratings for ', professorName)
+            console.log('done searching ratings for ', professorMatches )
             res.json(professorMatches);
           } else {
-            console.log(`No matching professor found for: ${professorName}`);
+            //console.log(`No matching professor found for: ${professorName}`);
             return res.json([])
           }
         } else {
